@@ -18,6 +18,10 @@ export interface AskResponse {
   risk_level: RiskLevel;
   confidence_score: number;
   context_completeness_score: number;
+  covered_topics?: string[];
+  reliability_status?: string;
+  learning_recommendations?: string[];
+  learning_level?: string;
 }
 
 export interface QueryHistoryItem {
@@ -35,29 +39,37 @@ export function useAsk() {
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<AskResponse | null>(null);
 
-  const askQuestion = async (question: string, forcedModelTier?: string): Promise<AskResponse | null> => {
+  const askQuestion = async (question: string, forcedModelTier?: string): Promise<{ data: AskResponse | null; error: string | null }> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const { data, error: invokeError } = await supabase.functions.invoke('ask', {
         body: { question, forcedModelTier }
       });
-      
+
       if (invokeError) {
         throw new Error(invokeError.message);
       }
-      
+
       if (data.error) {
         throw new Error(data.error);
       }
-      
+
       setResponse(data);
-      return data;
+      return { data, error: null };
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to get answer';
+      console.error('Error asking question:', err);
+      let message = 'Failed to get answer';
+      if (err instanceof Error) {
+        message = err.message;
+      } else if (typeof err === 'object' && err !== null && 'message' in err) {
+        message = String((err as any).message);
+      } else if (typeof err === 'string') {
+        message = err;
+      }
       setError(message);
-      return null;
+      return { data: null, error: message };
     } finally {
       setIsLoading(false);
     }

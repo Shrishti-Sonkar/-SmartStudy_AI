@@ -71,7 +71,7 @@ export function TransparencyPanel({ response }: TransparencyPanelProps) {
         </div>
         {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
-      
+
       {isOpen && (
         <div className="px-4 pb-4 space-y-4 border-t border-border pt-4">
           {/* Trust Score Breakdown */}
@@ -118,7 +118,7 @@ export function TransparencyPanel({ response }: TransparencyPanelProps) {
               <p className="text-sm text-muted-foreground mt-1">{modelInfo.description}</p>
             </div>
           </div>
-          
+
           {/* Efficiency Stats */}
           <div className="flex gap-3">
             <div className="flex-shrink-0 p-2 rounded-lg bg-accent/10">
@@ -129,20 +129,20 @@ export function TransparencyPanel({ response }: TransparencyPanelProps) {
               <p className="text-sm text-muted-foreground mt-1">{modelInfo.efficiency}</p>
             </div>
           </div>
-          
+
           {/* Routing Reason */}
           <div className="p-3 rounded-lg bg-muted/50">
             <p className="text-sm text-muted-foreground">
               <span className="font-medium text-foreground">Routing decision:</span> {response.routing_reason}
             </p>
           </div>
-          
+
           {/* Response Time */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Response time:</span>
             <span className="font-mono font-medium text-foreground">{response.response_time_ms}ms</span>
           </div>
-          
+
           {response.was_escalated && (
             <div className="p-3 rounded-lg bg-warning/10 border border-warning/20">
               <p className="text-sm text-warning-foreground">
@@ -150,6 +150,26 @@ export function TransparencyPanel({ response }: TransparencyPanelProps) {
               </p>
             </div>
           )}
+
+          {/* Reliability Status & Coverage */}
+          <div className="p-3 rounded-lg bg-muted/50 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Reliability Status:</span>
+              <span className={cn("text-sm font-bold", response.reliability_status === "Verified Stable" ? "text-green-600" : "text-yellow-600")}>
+                {response.reliability_status || "N/A"}
+              </span>
+            </div>
+            {response.covered_topics && response.covered_topics.length > 0 && (
+              <div className="text-sm">
+                <span className="font-medium">Curriculum Coverage:</span>
+                <ul className="list-disc list-inside text-muted-foreground mt-1 ml-1">
+                  {response.covered_topics.map((topic, i) => (
+                    <li key={i}>{topic}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
