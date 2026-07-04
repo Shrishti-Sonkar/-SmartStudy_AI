@@ -22,6 +22,26 @@ export interface AskResponse {
   reliability_status?: string;
   learning_recommendations?: string[];
   learning_level?: string;
+  reference_metadata?: {
+    reliability_status: string;
+    curriculum_coverage: string;
+    key_concepts: string[];
+    suggested_reference: string;
+  };
+  references?: string[];
+  // ── Feature 1: Research Mode ──────────────────────────────────────────────
+  mode?: 'text' | 'research' | 'vision';
+  sources_used?: boolean;
+  // ── Feature 2: Vision Mode ─────────────────────────────────────────────────
+  modality?: 'text' | 'image';
+  image_url?: string | null;
+  image_size?: string;
+  image_provider?: string;           // e.g. "Stable Diffusion XL"
+  // ── Feature 3: Score-Based Routing ────────────────────────────────────────
+  routing_scores?: Record<string, number>;
+  routing_score_reason?: string;
+  // ── Feature 4: Escalation ─────────────────────────────────────────────────
+  escalation_reason?: string;
 }
 
 export interface QueryHistoryItem {

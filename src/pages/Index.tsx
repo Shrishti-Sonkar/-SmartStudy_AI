@@ -7,7 +7,7 @@ import { AnswerDisplay } from '@/components/AnswerDisplay';
 import { QueryHistorySidebar } from '@/components/QueryHistorySidebar';
 import { useAsk } from '@/hooks/useAsk';
 import { useToast } from '@/hooks/use-toast';
-import { ReliabilityTester } from '@/components/ReliabilityTester';
+
 import { LearningPathPanel } from '@/components/LearningPathPanel';
 import { ConceptMap } from '@/components/ConceptMap';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -125,12 +125,7 @@ const Index = () => {
             <QuestionInput onSubmit={handleSubmit} isLoading={isLoading} />
           )}
 
-          {/* Reliability Tester (Added based on user request) */}
-          {!response && !isLoading && (
-            <div className="mt-12">
-              <ReliabilityTester />
-            </div>
-          )}
+
 
           {/* Features row */}
           {!response && !isLoading && (

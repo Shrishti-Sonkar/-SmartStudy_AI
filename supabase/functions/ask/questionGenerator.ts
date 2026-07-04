@@ -53,7 +53,7 @@ Return ONLY a JSON array in this format:
         : 'https://api.openai.com/v1/chat/completions';
 
     // Use a reasoning-capable model for generation
-    const model = isGroq ? 'llama-3.1-70b-versatile' : 'gpt-4o';
+    const model = isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o';
 
     const response = await fetch(baseUrl, {
         method: 'POST',

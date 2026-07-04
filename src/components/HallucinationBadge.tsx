@@ -8,27 +8,28 @@ interface HallucinationBadgeProps {
 }
 
 export function HallucinationBadge({ score, size = 'md', showLabel = true }: HallucinationBadgeProps) {
+  // Backend now sends hallucination as percentage (0-100)
   const getConfig = (score: number) => {
-    if (score < 0.3) {
+    if (score < 30) {
       return {
-        label: 'High Confidence',
+        label: 'Low Risk',
         color: 'bg-success/10 text-success border-success/20',
         Icon: ShieldCheck,
         description: 'Answer is highly reliable'
       };
-    } else if (score < 0.6) {
+    } else if (score < 60) {
       return {
-        label: 'Moderate Confidence',
+        label: 'Moderate Risk',
         color: 'bg-warning/10 text-warning-foreground border-warning/20',
         Icon: Shield,
         description: 'Review recommended'
       };
     } else {
       return {
-        label: 'Low Confidence',
+        label: 'High Risk',
         color: 'bg-destructive/10 text-destructive border-destructive/20',
         Icon: ShieldAlert,
-        description: 'Verified by additional model'
+        description: 'Verify with additional sources'
       };
     }
   };
@@ -58,7 +59,7 @@ export function HallucinationBadge({ score, size = 'md', showLabel = true }: Hal
       {showLabel && (
         <span>{config.label}</span>
       )}
-      <span className="font-mono">({(score * 100).toFixed(0)}%)</span>
+      <span className="font-mono">({score.toFixed(0)}%)</span>
     </div>
   );
 }
